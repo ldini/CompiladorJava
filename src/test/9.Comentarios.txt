@@ -1,0 +1,6 @@
+programa {
+	<<Este programa es para probar si se identifican los comentarios
+	INT a =: 3;
+}
+
+//para probar los comentarios y le puse una asignacion como para que haya algo mas

@@ -1,0 +1,5 @@
+programa {
+	INT dentroRangoPositivo, dentroRangoNegativo;
+	dentroRangoPositivo = 126;
+	dentroRangoNegativo = -128;
+}
