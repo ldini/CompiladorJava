@@ -1,0 +1,6 @@
+programa {
+	INT entero =: 10;
+	INT i;
+	FLOAT jjjjjjjjjjjjjjjjjjjjjjjj;
+	nombresupersupersupersupersuperlargo =:4;
+}

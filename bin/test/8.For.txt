@@ -1,0 +1,11 @@
+programa {
+	INT maximo =: 10;
+	INT i;
+	FLOAT j;
+	j =: 1.;
+	if(j = 1. ){
+		for(i=:0; i < maximo; +i){
+			out('posicion: ' + i);
+		}
+	}
+}

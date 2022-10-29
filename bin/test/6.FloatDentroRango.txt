@@ -1,0 +1,5 @@
+programa {
+	FLOAT dentroRangoPositivo, dentroRangoNegativo;
+	dentroRangoPositivo = 3.1347F+38;
+	dentroRangoNegativo = -3.1347F+38;
+}
