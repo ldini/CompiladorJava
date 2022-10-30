@@ -54,23 +54,41 @@ public class Lexico {
 		index = 0;
 	}
 	
-	private boolean EOF() {
-		return index == codigoFuente.size()-1;
-	}
+
 	
 	// SEPARA DEL CODIGO FUENTE UN TOKEN SIN MODIFICAR EL MISMO
-	public int getToken() {
+	public int getToken() { 
 		Character simbolo;
 		buffer = "";
 		int estadoActual = ESTADO_INICIAL;
+		
+		if(EOF())
+			System.out.println("----FIN DE ARCHIVO----");
+		else {
+		
+		while(estadoActual == ESTADO_INICIAL && !EOF()) {
+			simbolo = codigoFuente.get(index);
+			buffer += simbolo;
+			estadoActual = nextEstado(estadoActual,simbolo);
+			if(estadoActual == ESTADO_INICIAL) {
+				buffer = "";
+			}
+			index ++;
+		} 
+		
+
 		while(estadoActual != ESTADO_FINAL && !EOF()) {
 			simbolo = codigoFuente.get(index);
-			index ++;
 			estadoActual = nextEstado(estadoActual,simbolo);
-			if(estadoActual != ESTADO_INICIAL && estadoActual != ESTADO_FINAL)
+			if(estadoActual != ESTADO_FINAL) {
 				buffer += simbolo;
+				index++;
+			}
 		}
-		index--;
+		
+
+		}
+		
 		System.out.println(buffer);
 		return 1;
 	}
@@ -91,6 +109,10 @@ public class Lexico {
         } 
         b.close(); 
         return fuente;
+	}
+	
+	private boolean EOF() {
+		return index == codigoFuente.size();
 	}
 	
 	private static int[][] inicializarMatrizDeTransicion() {	
@@ -118,6 +140,7 @@ public class Lexico {
 		return matrizTransicion;		
 	}
 	
+	// RETORNA LA CONSTANTE CONRRESPONDIENTE
 	private static int toInt(char c){
 		if(c >= 'A' && c <= 'Z' && c != 'F')
 			return LETRA_MAYUSCULA;
@@ -131,7 +154,9 @@ public class Lexico {
 				return ESPACIO_EN_BLANCO;
 			case '\n':
 				return SALTO_DE_LINEA;
-			case '	':
+			case '\r':
+				return SALTO_DE_LINEA;
+			case '\t':
 				return TAB;
 			case 'F':
 				return F_FLOTANTE;

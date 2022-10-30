@@ -1,1 +1,3 @@
-  cccc ccc cc
+pr{
+	FLOAT variable;
+}

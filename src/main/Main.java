@@ -35,6 +35,9 @@ public class Main {
     	lex.getToken();
     	lex.getToken();
     	lex.getToken();
-//    	lex.getToken();
+    	lex.getToken();
+    	lex.getToken();
+    	lex.getToken();
+    	lex.getToken();
     }
 }
