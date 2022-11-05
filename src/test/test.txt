@@ -1,5 +1,4 @@
 programa{
 	FLOAT variable;
-	<<HOLA COMO ESTAS
 	if()
 }
