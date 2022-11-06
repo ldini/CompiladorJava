@@ -14,16 +14,10 @@ public class Main {
     	String path = "C:\\Users\\Leandro\\Desktop\\Compiladores\\Compilador2.0\\src\\test\\test.txt";
     	Lexico lex = new Lexico(path);
     	
-    	lex.getToken();
-    	lex.getToken();
-    	lex.getToken();
-    	lex.getToken();
-    	lex.getToken();
-    	lex.getToken();
-    	lex.getToken();
-    	lex.getToken();
-    	lex.getToken();
-    	lex.getToken();
+    	for (int i = 0; i < 23; i++) {
+    		lex.getToken();
+		}    	
+
 
     }
 }

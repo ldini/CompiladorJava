@@ -1,4 +1,15 @@
 programa{
 	FLOAT variable;
+	<< hola como estas 
+	>
+	>=
+	<
+	<<
+	if()
+	1.11F1
+	1.1
+	.1
+	1.F1+
+	1.F1-1
 	if()
 }

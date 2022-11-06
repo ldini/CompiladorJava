@@ -91,11 +91,11 @@ public class Lexico {
 				ejecutarAccionesSemanticas(estadoActual,simbolo);
 				estadoActual = nextEstado(estadoActual,simbolo);
 			}
+			System.out.println(TablaDeSimbolos.get(buffer) + ": " + token + ": " + buffer);// SOLO PARA MOSTRAR
 		}
 		else
 			System.out.println("----FIN DE ARCHIVO----");		
 		
-		System.out.println(token + ": " + buffer);
 		return token;
 	}
 	
@@ -234,26 +234,26 @@ public class Lexico {
 		//CADA NUMERO UBICADO EN LA CELDA DE LA MATRIZ CORRESPONDE A SU ACCION SEMANTICA CORRESPONDIENTE.
 		int [][] matriz = {
 				//LM	lm		DIGITO	BLANCO	/n	TAB	F	_	= 	<	>	(	)	{	}	,	;	-	 + 	/	.	!	'  :   *
-				{10,	10,		R,		2,		13,	2,	10,	2,	R,	R,	R,	9,	9,	9,	9,	9,	9,	9,	9,	9,	R,	9,	R, 9 , 9},	//Estado 0  OK
-				{11,	11,		11,		12,		12,	12,	11,	11,	12,	12, 12,	12,	12,	12,	12,	12,	12,	12,	12,	12,	12,	12,	12, 12 , 12},	//Estado 1  R
-				{9,		9,		9,		9,		9,	9,	9,	9,	4,	4,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9, 9 , 9},	//Estado 2  OK
-				{9,		9,		9,		9,		9,	9,	9,	9,	4,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9, 3 , 3},	//Estado 3  OK
-				{9,		9,		9,		9,		9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	4,	9, 3 , 3}, //Estado 4  OK FALTA :	
-				{0,		0,		0,		0,		8,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0, 3 , 3},	//Estado 5  OK
-				{9,		9,		4,		9,		9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	4,	9,	9, 3 , 3}, //Estado 6  OK	
-				{9,		9,		4,		9,		9,	9,	4,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9, 3 , 3}, //Estado 7  OK
-				{9,		9,		4,		9,		9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	4,	4,	9,	9,	9,	9, 3 , 3}, //Estado 8  OK
-				{9,		9,		4,		9,		9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9,	9, 3 , 3}, //Estado 9  OK	
-				{4,		4,		4,		4,		-1,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	0,	4,	4,	6, 3 , 3},	//Estado 10 OK
-				{4,		4,		4,		4,		0,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	6, 3 , 3},	//Estado 11 OK
-				{4,		4,		4,		4,		0,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	0,	4,	4,	6, 3 , 3}	//Estado 12 OK
+				{10,	10,		10,		2,		13,	2,	10,	2,	10,	10,	10,	9,	9,	9,	9,	9,	9,	9,	9,	9,	10,	9,	R, 9 , 9},	//Estado 0  OK
+				{11,	11,		11,		12,		12,	12,	11,	11,	12,	12, 12,	12,	12,	12,	12,	12,	12,	12,	12,	12,	12,	12,	12,12,12},	//Estado 1  OK
+				{15,	15,		15,		15,		15,	15,	15,	15,	14,	14,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,15,15},	//Estado 2  OK
+				{15,	15,		15,		15,		15,	15,	15,	15,	14,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,15,15},	//Estado 3  OK
+				{15,	15,		15,		15,		15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	14,	15,14,15},  //Estado 4  OK	
+				{2,		2,		2,		2,		13,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2, 2 , 2},	//Estado 5  OK
+				{16,	16,		11,		16,		16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	11,	16,	16,16,16},  //Estado 6  OK	
+				{16,	16,		11,		16,		16,	16,	11,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,16,16},  //Estado 7  OK
+				{16,	16,		11,		16,		16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	11,	11,	16,	16,	16,16,16 ,16},  //Estado 8  OK
+				{16,	16,		11,		16,		16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,16,16, 16},  //Estado 9  	
+				{4,		4,		4,		4,		-1,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	0,	4,	4,	6, 3 , 3},	//Estado 10 
+				{4,		4,		4,		4,		0,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	6, 3 , 3},	//Estado 11 
+				{4,		4,		4,		4,		0,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	0,	4,	4,	6, 3 , 3}	//Estado 12 
 		
 		};
 		
 		return matriz;
 	}
 	
-	//ACCIONES SEMANTICAS
+	//ACCIONES SEMANTICAS ATOMICAS
 	
 	//AS1: INICIALIZA EL BUFFER EN VACIO
 	private Integer AS_0(Integer i) {
@@ -328,8 +328,7 @@ public class Lexico {
 		AS_5(1);
 		AS_7(1);
 		AS_2(1);
-		return 0;
-
+		return 0;	
 	}
 	
 	private Integer AS_10(Integer i) {
@@ -359,16 +358,26 @@ public class Lexico {
 		return 0;
 	}
 
-
-
+	private Integer AS_14(Integer i) {
+		AS_1(1);
+		AS_6(1);
+		AS_7(1);
+		AS_2(1);
+		return 0;
+	}
 	
+	private Integer AS_15(Integer i) {
+		AS_5(1);
+		AS_7(1);
+		return 0;
+	}
+	
+	private Integer AS_16(Integer i) {
+		AS_6(1);
+		AS_8(1);
+		return 0;
+	}
 
-
-	
-
-	
-	
-	
 	private void cargarAccionesSemanticas() {
 
 			Function<Integer,Integer> aux;
@@ -415,7 +424,14 @@ public class Lexico {
 			aux = this::AS_13;
 			AccionesSemanticas.add(aux);
 			
-
+			aux = this::AS_14;
+			AccionesSemanticas.add(aux);
+			
+			aux = this::AS_15;
+			AccionesSemanticas.add(aux);
+			
+			aux = this::AS_16;
+			AccionesSemanticas.add(aux);
 
 	}
 	
