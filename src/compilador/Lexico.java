@@ -33,7 +33,7 @@ public class Lexico {
 	public static int LETRA_MINUSCULA = 1;		//LETRAS MINUSCULA
 	public static int DIGITO = 2;				//NUMEROS
 	public static int ESPACIO_EN_BLANCO = 3;	//ESPACIO EN BLANCO
-	public static int SALTO_DE_LINEA = 4;   	//SALTO DE LINEA O /n
+	public static int SALTO_DE_LINEA = 4;   	//SALTO DE LINEA O /n o /r
 	public static int TAB = 5;					//TECLA DE TABULACION
 	public static int F_FLOTANTE = 6;			//F PARA LOS NUMEROS FLOTANTES
 	public static int GUION_BAJO = 7;			// _ 
@@ -133,19 +133,19 @@ public class Lexico {
 		//DENTRO DE LA MATRIZ HAY ESTADOS DE ERROR QUE SE MANEJAN CON ACCIONES SEMANTICAS Y VAN A ESTADO FINAL.
 				
 		//LM-{F}	lm		Digito	Blanco	/n	Tab	F   _   =   <	>	(	)	{	}	,	;	-   + 	/	.	!	 ' 	:  *
-			{1,		1,		6,		0,		0,	0,	1,	0,	4,	2,	3,	F,	F,	F,	F,	F,	F,	F,	F,	F,	7,	F,	10, 3 ,3},	// ESTADO 0  INICIAL OK FALTA :
-			{1,		1,		1,		F,		F,	F,	1,	1,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,  3 ,3},		// ESTADO 1  OK  
-			{F,		F,		F,		F,		F,	F,	F,	F,	F,	5,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,  3 ,3},		// ESTADO 2  OK
-			{F,		F,		F,		F,		F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,  3 ,3},		// ESTADO 3  OK
-			{F,		F,		F,		F,		F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,  3 ,3},		// ESTADO 4  OK
-			{5,		5,		5,		5,		0,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,  3 ,3},		// ESTADO 5  OK
-			{F,		F,		6,		F,		F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	7,	F,	F,  3 ,3},		// ESTADO 6  OK
-			{F,		F,		7,		F,		F,	F,	8,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,  3 ,3},		// ESTADO 7  OK
-			{F,		F,		8,		F,		F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	9,	9,	F,	F,	F,	F,  3 ,3},		// ESTADO 8  OK
-			{F,		F,		9,		F,		F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,  3 ,3},		// ESTADO 9  OK
-			{10,	10,		10,		10,		F,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	11,	10,	10,	F,  3 ,3},		// ESTADO 10 OK
-			{10,	10,		10,		10,		F,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	11,	10,	10,	F,  3 ,3},		// ESTADO 11 OK
-			{10,	10,		10,		10,		12,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	11,	10,	10,	F,  3 ,3}		// ESTADO 12 OK
+			{1,		1,		6,		0,		0,	0,	1,	0,	4,	2,	3,	F,	F,	F,	F,	F,	F,	F,	F,	F,	7,	F,	10, F ,F},	// ESTADO 0  INICIAL OK FALTA :
+			{1,		1,		1,		F,		F,	F,	1,	1,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,  F ,F},		// ESTADO 1  OK  
+			{F,		F,		F,		F,		F,	F,	F,	F,	F,	5,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,  F ,F},		// ESTADO 2  OK
+			{F,		F,		F,		F,		F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,  F ,F},		// ESTADO 3  OK
+			{F,		F,		F,		F,		F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,  F ,F},		// ESTADO 4  OK
+			{5,		5,		5,		5,		0,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,  5 ,5},		// ESTADO 5  OK
+			{F,		F,		6,		F,		F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	7,	F,	F,  F ,F},		// ESTADO 6  OK
+			{F,		F,		7,		F,		F,	F,	8,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,  F ,F},		// ESTADO 7  OK
+			{F,		F,		8,		F,		F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	9,	9,	F,	F,	F,	F,  F ,F},		// ESTADO 8  OK
+			{F,		F,		9,		F,		F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,  F ,F},		// ESTADO 9  OK
+			{10,	10,		10,		10,		10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	11,	10,	10,	F,  10,10},		// ESTADO 10 OK
+			{10,	10,		10,		10,		12,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	11,	10,	10,	F,  10,10},		// ESTADO 11 OK
+			{10,	10,		10,		10,		10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	F,  10,10}		// ESTADO 12 OK
 		};
 		
 		return matrizTransicion;		
@@ -234,7 +234,7 @@ public class Lexico {
 		//CADA NUMERO UBICADO EN LA CELDA DE LA MATRIZ CORRESPONDE A SU ACCION SEMANTICA CORRESPONDIENTE.
 		int [][] matriz = {
 				//LM	lm		DIGITO	BLANCO	/n	TAB	F	_	= 	<	>	(	)	{	}	,	;	-	 + 	/	.	!	'  :   *
-				{10,	10,		10,		2,		13,	2,	10,	2,	10,	10,	10,	9,	9,	9,	9,	9,	9,	9,	9,	9,	10,	9,	R, 9 , 9},	//Estado 0  OK
+				{10,	10,		10,		2,		13,	2,	10,	2,	10,	10,	10,	9,	9,	9,	9,	9,	9,	9,	9,	9,	10,	9,	10, 9 ,9},	//Estado 0  OK
 				{11,	11,		11,		12,		12,	12,	11,	11,	12,	12, 12,	12,	12,	12,	12,	12,	12,	12,	12,	12,	12,	12,	12,12,12},	//Estado 1  OK
 				{15,	15,		15,		15,		15,	15,	15,	15,	14,	14,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,15,15},	//Estado 2  OK
 				{15,	15,		15,		15,		15,	15,	15,	15,	14,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,15,15},	//Estado 3  OK
@@ -242,11 +242,11 @@ public class Lexico {
 				{2,		2,		2,		2,		13,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2, 2 , 2},	//Estado 5  OK
 				{16,	16,		11,		16,		16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	11,	16,	16,16,16},  //Estado 6  OK	
 				{16,	16,		11,		16,		16,	16,	11,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,16,16},  //Estado 7  OK
-				{16,	16,		11,		16,		16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	11,	11,	16,	16,	16,16,16 ,16},  //Estado 8  OK
-				{16,	16,		11,		16,		16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,16,16, 16},  //Estado 9  	
-				{4,		4,		4,		4,		-1,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	0,	4,	4,	6, 3 , 3},	//Estado 10 
-				{4,		4,		4,		4,		0,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	6, 3 , 3},	//Estado 11 
-				{4,		4,		4,		4,		0,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	4,	0,	4,	4,	6, 3 , 3}	//Estado 12 
+				{16,	16,		11,		16,		16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	11,	11,	16,	16,	16, 16,16,16},  //Estado 8  OK
+				{16,	16,		11,		16,		16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16, 16,16,16},  //Estado 9  OK 	
+				{11,	11,		11,		11,		13,	11,	11,	11,	11,	11,	11,	11,	11,	11,	11,	11,	11,	11,	11,	2,	11,	11,	18,11,11},	//Estado 10 OK
+				{17,	17,		17,		17,		13,	17,	17,	17,	17,	17,	17,	17,	17,	17,	17,	17,	17,	17,	17,	11,	17,	17,	19,17,17},	//Estado 11 OK
+				{20,	20,		20,		20,		13,	20,	20,	20,	20,	20,	20,	20,	20,	20,	20,	20,	20,	20,	20,	20,	20,	20,	18, 20 ,20}	//Estado 12 OK
 		
 		};
 		
@@ -302,8 +302,9 @@ public class Lexico {
 		return 0;
 	}
 	
-	//AS10: DEVUELVE EL TOKEN IDENTIFICADOR O PALABRA RESERVADA EN CASO QUE LO SEA
+	//AS10: DEVUELVE EL TOKEN IDENTIFICADO Y CHEQUEA LA LONGITUD DEL NOMBRE DEL IDENTIFICADOR O PALABRA RESERVADA EN CASO QUE LO SEA
 	private Integer AS_7(Integer i) {
+		
 		if(TablaDeSimbolos.get(buffer) >= 258 && TablaDeSimbolos.get(buffer) <= 267)
 			token = TablaDeSimbolos.get(buffer);
 		else 
@@ -318,8 +319,8 @@ public class Lexico {
 		token = CTE;
 		return 0;
 	}
-	
 
+	// ACCIONES SEMANTICAS COMPUESTAS.
 	
 	//AS3: DESDE EL ESTADO 2,3 y 4, CON LOS CARACTERES QUE NO CORRESPONDIDOS SE QUE CON EL STRING ACTUAL Y VUELVE AL ESTADO ANTERIOR
 	private Integer AS_9(Integer i) {
@@ -349,6 +350,7 @@ public class Lexico {
 	private Integer AS_12(Integer i) {
 		AS_6(1);
 		AS_7(1);
+		AS_21(1);
 		return 0;
 	}
 	
@@ -366,17 +368,80 @@ public class Lexico {
 		return 0;
 	}
 	
+	//AS15: SE UTILIZA EN EL ESTADO 2, 3 Y 4 CUANDO PASA AL ESTADO FINAL EN CONSECUENCIA DE EL INGRESO DE UN CARACTER
+	//PARA AGREGAR IDENTIFICADORES A LA TABLA DE SIMBOLOS Y DEVOLVER SU CORRESPONDIENTE TOKEN.
 	private Integer AS_15(Integer i) {
 		AS_5(1);
 		AS_7(1);
+		
 		return 0;
 	}
 	
+	//AS16: SE UTILIZA EN EL ESTADO 6,7,8,Y 9 CUANDO PASA AL ESTADO FINAL EN CONSECUENCIA DE EL INGRESO DE UN CARACTER
+	//PARA AGREGAR CONSTANTES A LA TABLA DE SIMBOLOS Y DEVOLVER SU CORRESPONDIENTE TOKEN.
 	private Integer AS_16(Integer i) {
 		AS_6(1);
 		AS_8(1);
 		return 0;
 	}
+
+	//AS17: SE UTILIZA EN CASO  QUE DEL ESTADO 11 AL 10 APARZCA UN '/' PARA CONCADENARLA Y TOMARLA COMO PARTE DEL LA CADENA DE CARACTERES
+ 	private Integer AS_17(Integer i) {
+		AS_3(1);
+		AS_1(1);
+		AS_2(1);
+		return 0;
+	}
+	
+	
+	//AS18: EN CASO DE QUE LA CADENA DE CARACTERES SEA VACIA EN EL ESTADO 10 O 12, LE ASIGNA A '' UN TOKEN Y DEVUELVE EL TOKEN DE CONSTANTE 
+	private Integer AS_18(Integer i) {
+		AS_1(1);
+		AS_6(1);
+		AS_8(1);
+		AS_2(1);
+		return 0;
+	}
+	
+	//AS19: EN EL ESTADO 11 EN CASO DE QUE EN LUGAR DE ENCONTRAR UN SALTO DE LINEA O CUALQUIER OTRO CARACTER ENCUENTRA UN ' DEBE AGREGAR
+	// LA '/' EN LA CADENA DE CARACTERA YA QUE ES PARTE DE ESTE POR ESTA RAZON SE CREO LA ACCION SEMANTICA 19.
+	private Integer AS_19(Integer i) {
+		AS_3(1);
+		AS_1(1);
+		AS_2(1);
+		AS_1(1);
+		AS_6(1);
+		AS_8(1);
+		AS_2(1);
+		return 0;
+	}
+	
+	//AS20: NO APLICA ACCION SEMANTICA
+	//ES UTILIZADO EN EL ESTADO DOCE PARA QUE DELEGARLE EL NUEVO CARACTER QUE SERIA UNA NUEVA LINEA AL ESTADO 10 QUE SABE COMO HACERLO.
+	private Integer AS_20(Integer i) {
+		return 0;
+	}
+	
+	//AS21: ESTA ACCION SEMANTICA CHEQUEA QUE LOS IDENTIFICADORES CON NOMBRES MAYORES A LONGITUD 25 SEAN TRUNCADOS.
+	private Integer AS_21(Integer i) {
+		if(buffer.length() > 25) {
+			TablaDeSimbolos.remove(buffer);
+			buffer = buffer.substring(0,25);
+			TablaDeSimbolos.put(buffer, id_token);
+			System.out.println("LINEA: "+ (linea+1)/2 + " WARNING: EL NOMBRE DEL IDENTIFICADOR ES MAYOR A 25 CARACTERES, ESTE FUE TRUNCADO.");
+		}
+		return 0;
+	}
+
+	//AS22: CASO PARTICULAR 1, LOS ENTEROS DEBEN ESTAR ENTRE -2^7 Y 2^7-1 
+	private Integer AS_22(Integer i) {
+		int entero = Integer.parseInt(buffer);
+		if(entero < -128 && entero > 128)
+			System.out.println("LINEA: "+ (linea+1)/2 + " ERROR: CONSTANTE ENTERA FUERA DE RANGO PERMITIDO.");
+		return 0;
+	}
+	
+	
 
 	private void cargarAccionesSemanticas() {
 
@@ -431,6 +496,24 @@ public class Lexico {
 			AccionesSemanticas.add(aux);
 			
 			aux = this::AS_16;
+			AccionesSemanticas.add(aux);
+			
+			aux = this::AS_17;
+			AccionesSemanticas.add(aux);
+			
+			aux = this::AS_18;
+			AccionesSemanticas.add(aux);
+			
+			aux = this::AS_19;
+			AccionesSemanticas.add(aux);
+			
+			aux = this::AS_20;
+			AccionesSemanticas.add(aux);
+			
+			aux = this::AS_21;
+			AccionesSemanticas.add(aux);
+			
+			aux = this::AS_22;
 			AccionesSemanticas.add(aux);
 
 	}

@@ -14,7 +14,7 @@ public class Main {
     	String path = "C:\\Users\\Leandro\\Desktop\\Compiladores\\Compilador2.0\\src\\test\\test.txt";
     	Lexico lex = new Lexico(path);
     	
-    	for (int i = 0; i < 23; i++) {
+    	for (int i = 0; i < 30; i++) {
     		lex.getToken();
 		}    	
 
