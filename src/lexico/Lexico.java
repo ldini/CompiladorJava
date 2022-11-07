@@ -1,4 +1,4 @@
-package compilador;
+package lexico;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -35,7 +35,7 @@ public class Lexico {
 	public static int ESPACIO_EN_BLANCO = 3;	//ESPACIO EN BLANCO
 	public static int SALTO_DE_LINEA = 4;   	//SALTO DE LINEA O /n o /r
 	public static int TAB = 5;					//TECLA DE TABULACION
-	public static int F_FLOTANTE = 6;			//F PARA LOS NUMEROS FLOTANTES
+	public static int F_EXPONENCIAL = 6;			//F PARA LOS NUMEROS EXPONENCIALES
 	public static int GUION_BAJO = 7;			// _ 
 	public static int IGUAL = 8;				// =
 	public static int MENOR = 9;				// <
@@ -52,9 +52,10 @@ public class Lexico {
 	public static int PUNTO = 20;				// .
 	public static int EXCLAMACION = 21;			// !
 	public static int COMILLA_SIMPLE = 22;		// '
-	public static int ASTERISCO = 23;		// '	
-	public static int OTRO = 24;				//CUALQUIER OTRO CARACTER NO CONTEMPLADO EN ESTA ENTREGA
-	public static int EOF = 25;					//FIN DEL ARCHIVO
+	public static int DOS_PUNTOS = 23;			// :
+	public static int MULTIPLICACION = 24;		// *	
+	public static int OTRO = 25;				//CUALQUIER OTRO CARACTER NO CONTEMPLADO EN ESTA ENTREGA
+	public static int EOF = 26;					//FIN DEL ARCHIVO
 	
 	public static int ENTRADAS = 26;			//TOTAL DE ENTRADAS POSIBLES.
 	public static int ESTADOS = 13;				//TOTAL DE ESTADOS DISPONIBLES.
@@ -170,7 +171,7 @@ public class Lexico {
 			case '\t':
 				return TAB;
 			case 'F':
-				return F_FLOTANTE;
+				return F_EXPONENCIAL;
 			case '_':
 				return GUION_BAJO;
 			case '=':
@@ -201,6 +202,10 @@ public class Lexico {
 				return PUNTO;
 			case '!':
 				return EXCLAMACION;
+			case ':':
+				return DOS_PUNTOS;
+			case '*':
+				return MULTIPLICACION;
 			default:
 				if ((char)c == 39)
 					return COMILLA_SIMPLE;
@@ -216,7 +221,7 @@ public class Lexico {
 		TablaDeSimbolos.put("if", 258);
 		TablaDeSimbolos.put("then", 259);
 		TablaDeSimbolos.put("else", 260);
-		TablaDeSimbolos.put("end-if", 261);
+		TablaDeSimbolos.put("end_if", 261);
 		TablaDeSimbolos.put("out", 262);
 		TablaDeSimbolos.put("fun", 263);
 		TablaDeSimbolos.put("return", 264);
@@ -281,7 +286,8 @@ public class Lexico {
 	
 	//AS8: AUMENTA EN UNO LA LINEA ACTUAL Y LLAMA A AS0
 	private Integer AS_4(Integer i) {
-		linea++;
+		if(codigoFuente.get(index) == '\n')
+			linea++;
 		return 0;
 	}
 	
@@ -428,7 +434,7 @@ public class Lexico {
 			TablaDeSimbolos.remove(buffer);
 			buffer = buffer.substring(0,25);
 			TablaDeSimbolos.put(buffer, id_token);
-			System.out.println("LINEA: "+ (linea+1)/2 + " WARNING: EL NOMBRE DEL IDENTIFICADOR ES MAYOR A 25 CARACTERES, ESTE FUE TRUNCADO.");
+			System.out.println("LINEA: "+ linea + " WARNING: EL NOMBRE DEL IDENTIFICADOR ES MAYOR A 25 CARACTERES, ESTE FUE TRUNCADO.");
 		}
 		return 0;
 	}
@@ -437,7 +443,7 @@ public class Lexico {
 	private Integer AS_22(Integer i) {
 		int entero = Integer.parseInt(buffer);
 		if(entero < -128 && entero > 128)
-			System.out.println("LINEA: "+ (linea+1)/2 + " ERROR: CONSTANTE ENTERA FUERA DE RANGO PERMITIDO.");
+			System.out.println("LINEA: "+ linea + " ERROR: CONSTANTE ENTERA FUERA DE RANGO PERMITIDO.");
 		return 0;
 	}
 	

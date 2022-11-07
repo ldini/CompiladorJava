@@ -1,10 +1,10 @@
-package main;
+package compilador;
 import java.io.FileNotFoundException; 
 import java.io.FileReader; 
 import java.io.IOException;
 import java.util.ArrayList;
 
-import compilador.Lexico;
+import lexico.Lexico;
 
 
 public class Main { 

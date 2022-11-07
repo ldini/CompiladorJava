@@ -1,4 +1,4 @@
-package compilador;
+package sintactico;
 
 public class Sintactico {
 
