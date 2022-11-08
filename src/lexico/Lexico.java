@@ -53,12 +53,14 @@ public class Lexico {
 	public static int EXCLAMACION = 21;			// !
 	public static int COMILLA_SIMPLE = 22;		// '
 	public static int DOS_PUNTOS = 23;			// :
-	public static int MULTIPLICACION = 24;		// *	
+	public static int MULTIPLICACION = 24;		// *
 	public static int OTRO = 25;				//CUALQUIER OTRO CARACTER NO CONTEMPLADO EN ESTA ENTREGA
 	public static int EOF = 26;					//FIN DEL ARCHIVO
 	
 	public static int ENTRADAS = 26;			//TOTAL DE ENTRADAS POSIBLES.
 	public static int ESTADOS = 13;				//TOTAL DE ESTADOS DISPONIBLES.
+	
+	
 	
 	//CONSTRUCTOR LEXICO
 	public Lexico(String path) throws FileNotFoundException, IOException {
@@ -98,6 +100,29 @@ public class Lexico {
 			System.out.println("----FIN DE ARCHIVO----");		
 		
 		return token;
+	}
+	
+	public String getLexema(int token) {
+		String Lexema;
+		Iterator<String> it = TablaDeSimbolos.keySet().iterator();
+
+		while( it.hasNext()) {
+
+			Lexema = it.next();
+			
+			if(TablaDeSimbolos.get(Lexema) == token)
+				return Lexema;
+		}
+
+		return "";
+	}
+	
+	public int getLinea() {
+		return linea;
+	}
+	
+	public HashMap<String,Integer> getTablaDeSimbolos(){
+		return TablaDeSimbolos;
 	}
 	
 	// A PARTIR DE EL ESTADO ACTUAL Y UN CARACTER DETERMINA ACCIONES SEMANTICAS A EJECUTAR.
@@ -218,16 +243,29 @@ public class Lexico {
 	private static void InicializarTablaDeSimbolos(){
 		
 		//PALABRAS RESERVADAS
-		TablaDeSimbolos.put("if", 258);
-		TablaDeSimbolos.put("then", 259);
-		TablaDeSimbolos.put("else", 260);
-		TablaDeSimbolos.put("end_if", 261);
-		TablaDeSimbolos.put("out", 262);
-		TablaDeSimbolos.put("fun", 263);
-		TablaDeSimbolos.put("return", 264);
-		TablaDeSimbolos.put("break", 265);
-		TablaDeSimbolos.put("i8", 266);  // TEMA PARTICULAR 1
-		TablaDeSimbolos.put("f32", 267); // TEMA PARTICULAR 7
+		TablaDeSimbolos.put("if", 257);
+		TablaDeSimbolos.put("then", 258);
+		TablaDeSimbolos.put("else", 259);
+		TablaDeSimbolos.put("end_if", 260);
+		TablaDeSimbolos.put("out", 261);
+		TablaDeSimbolos.put("fun", 262);
+		TablaDeSimbolos.put("return", 263);
+		TablaDeSimbolos.put("break", 264);
+		TablaDeSimbolos.put("discard", 265);
+		TablaDeSimbolos.put("for", 266);
+		TablaDeSimbolos.put("continue", 267);
+		TablaDeSimbolos.put("i8", 268);  // TEMA PARTICULAR 1
+		TablaDeSimbolos.put("f32", 269); // TEMA PARTICULAR 7
+
+		TablaDeSimbolos.put("ID", 270);
+		TablaDeSimbolos.put("CTE", 271);
+		TablaDeSimbolos.put("CTE_I8", 272);
+		TablaDeSimbolos.put("CTE_F32", 273);
+
+		TablaDeSimbolos.put(">=", 274);
+		TablaDeSimbolos.put("<=", 275);
+		TablaDeSimbolos.put("=!", 276);
+		TablaDeSimbolos.put("=:", 277);
 
 	}
 	
@@ -311,10 +349,16 @@ public class Lexico {
 	//AS10: DEVUELVE EL TOKEN IDENTIFICADO Y CHEQUEA LA LONGITUD DEL NOMBRE DEL IDENTIFICADOR O PALABRA RESERVADA EN CASO QUE LO SEA
 	private Integer AS_7(Integer i) {
 		
-		if(TablaDeSimbolos.get(buffer) >= 258 && TablaDeSimbolos.get(buffer) <= 267)
+		if(TablaDeSimbolos.get(buffer) >= 258 && TablaDeSimbolos.get(buffer) <= 271)
 			token = TablaDeSimbolos.get(buffer);
 		else 
 			token = ID;
+		return 0;
+	}
+	
+	//AS10: DEVUELVE EL TOKEN IDENTIFICADO Y CHEQUEA LA LONGITUD DEL NOMBRE DEL IDENTIFICADOR O PALABRA RESERVADA EN CASO QUE LO SEA
+	private Integer AS_23(Integer i) {
+			token = TablaDeSimbolos.get(buffer);
 		return 0;
 	}
 	
@@ -333,7 +377,7 @@ public class Lexico {
 		AS_0(1);
 		AS_1(1);
 		AS_5(1);
-		AS_7(1);
+		AS_23(1);
 		AS_2(1);
 		return 0;	
 	}
@@ -378,7 +422,7 @@ public class Lexico {
 	//PARA AGREGAR IDENTIFICADORES A LA TABLA DE SIMBOLOS Y DEVOLVER SU CORRESPONDIENTE TOKEN.
 	private Integer AS_15(Integer i) {
 		AS_5(1);
-		AS_7(1);
+		AS_23(1);
 		
 		return 0;
 	}
@@ -520,6 +564,9 @@ public class Lexico {
 			AccionesSemanticas.add(aux);
 			
 			aux = this::AS_22;
+			AccionesSemanticas.add(aux);
+			
+			aux = this::AS_23;
 			AccionesSemanticas.add(aux);
 
 	}

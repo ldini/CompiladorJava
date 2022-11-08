@@ -1,13 +1,12 @@
 %{
-	package Semantico;
-	import util.*;
-	import Compilador.*;
-	import Simbolo.*;
+	package sintactico;
+	import java.util.*;
+	import lexico.Lexico;
 	import java.util.Stack;
-
 %}
 
-%token if then else end_if out fun return break discard for continue and ok ID CTE i8 f32
+%token IF THEN ELSE END_IF OUT FUN RETURN BREAK DISCARD FOR CONTINUE I8 F32 ID CADENA CTE_I8 CTE_F32 MAYOR_IGUAL MENOR_IGUAL DISTINTO ASIGNACION AND OR  
+
 %start programa
 
 %%
@@ -20,17 +19,16 @@ conjunto_sentencias_programa: conjunto_sentencias_declarativas
 							  | conjunto_sentencias_declarativas conjunto_sentencias_ejecutables
 							  ;	
 
-errores_programa: '{' conjunto_sentencias_declarativas conjunto_sentencias_ejecutables {Notificador.addError(lexico.getLineaActual(), ("SINTACTICO en la Linea N°" + lexico.getLineaActual() + "- Falta la '{' del programa"));}
-				  | conjunto_sentencias_declarativas conjunto_sentencias_ejecutables '}' {Notificador.addError(lexico.getLineaActual(), ("SINTACTICO en la Linea N°" + lexico.getLineaActual() + "- Falta la '}' del programa"));}
+errores_programa: '{' conjunto_sentencias_declarativas conjunto_sentencias_ejecutables {System.out.println("SINTACTICO en la Linea N°" + lexico.getLinea() + "- Falta la '{' del programa");}
+				  | conjunto_sentencias_declarativas conjunto_sentencias_ejecutables '}' {System.out.println("SINTACTICO en la Linea N°" + lexico.getLinea() + "- Falta la '}' del programa");}
 				  ;
-tipo: INT
-      | FLOAT
+tipo: I8
+      | F32
       | CADENA
       ;
 
 sentencia_declarativa: tipo lista_variables ';'
-		             | fun ID '(' lista_parametros')' ':' tipo '{' conjunto_sentencias_declarativas conjunto_sentencias_ejecutables RETURN '(' expresion ')' '}' ';'
-
+		             | FUN ID '(' lista_parametros')' ':' tipo '{' conjunto_sentencias_declarativas conjunto_sentencias_ejecutables RETURN '(' expresion ')' '}' ';'
 					 ;
 
 conjunto_sentencias_declarativas: sentencia_declarativa
@@ -43,23 +41,26 @@ conjunto_sentencias_ejecutables: ejecutable
 
 ejecutable: asignacion ';'
 	        | sentencia_if
-			| sentencia_discard
+			| sentencia_DISCARD
 			| sentencia_for
 			| sentencia_salida
 	        ;
 
-sentencia_discard: discard ID '(' parametro ')' ';'
-				   ;
+sentencia_DISCARD: DISCARD ID '(' parametro ')' ';'
+				;
 
-sentencia_if: IF '(' condicion ')' then bloque_if end_if
+sentencia_if: IF '(' condicion ')' THEN bloque_if END_IF
 	          ;
 
 bloque_if: sentencia_ejecutable_if
 		   | sentencia_ejecutable_if ELSE sentencia_ejecutable_if
+		   ;
 
 sentencia_ejecutable_if: '{' conjunto_sentencias_ejecutables '}'
+						;
 
-etiqueta: ID ':' ;
+etiqueta: ID ':'
+	;
 
 sentencia_for: etiqueta FOR '(' asignacion ';' condicion_for ';' constante ')' conjunto_sentencias_ejecutables BREAK';' ';'
 			   | etiqueta FOR '(' asignacion ';' condicion_for ';' constante ')' conjunto_sentencias_ejecutables ';'
@@ -101,12 +102,12 @@ asignacion: ID ASIGNACION expresion ';'
 			
 invocacion_funcion: ID '(' ID ')'
 		    | errores_invocacion_funcion
-	            ;
+	        ;
 
-errores_invocacion_funcion: '(' ID ')' {Notificador.addError(lexico.getLineaActual(), ("SINTACTICO en la Linea N°" + lexico.getLineaActual() + "- Falta el ID que hace referencia al nombre de la Funcion"));}
-			    | ID '(' ')' {Notificador.addError(lexico.getLineaActual(), ("SINTACTICO en la Linea N°" + lexico.getLineaActual() + "- Falta el ID que hace referencia al nombre de la Funcion"));}
-			    | '(' ID {Notificador.addError(lexico.getLineaActual(), ("SINTACTICO en la Linea N°" + lexico.getLineaActual() + "- Falta el ')' de la Funcion"));}
-			    | ID ')' {Notificador.addError(lexico.getLineaActual(), ("SINTACTICO en la Linea N°" + lexico.getLineaActual() + "- Falta el '(' de la Funcion"));}
+errores_invocacion_funcion: '(' ID ')' {System.out.println("SINTACTICO en la Linea N°" + lexico.getLinea() + "- Falta el ID que hace referencia al nombre de la funcion");}
+			    | ID '(' ')' {System.out.println("SINTACTICO en la Linea N°" + lexico.getLinea() + "- Falta el ID que hace referencia al nombre de la funcion");}
+			    | '(' ID { System.out.println("SINTACTICO en la Linea N°" + lexico.getLinea() + "- Falta el ')' de la funcion");}
+			    | ID ')' { System.out.println("SINTACTICO en la Linea N°" + lexico.getLinea() + "- Falta el '(' de la funcion");}
 			    ;
 
 expresion: expresion '+' termino
@@ -121,9 +122,10 @@ termino: termino '*' factor
 
 factor: ID
 	| constante
+	;
 
-constante: CTE_INT
-	   | CTE_FLOAT
+constante: CTE_I8
+	   | CTE_F32
 	   ;
 
 parametro: tipo ID
@@ -143,28 +145,29 @@ lista_variables: ID
 		 ; 
 
 errores_lista_variables: lista_variables ',' 
-			 ;
+		 ;
 
-sentencia_salida: out '(' CADENA ')' ';'
+sentencia_salida: OUT '(' CADENA ')' ';'
+			;
 	
 
 %%
-public AnalizadorLexico lexico;
-private TablaSimbolos tablaSimbolos;
+public Lexico lexico;
 private Stack <Integer> p;
+private HashMap<String, Integer> tablaSimbolos;
 
-public Parser(AnalizadorLexico lexico, TablaSimbolos tablaSimbolos){
-	this.tablaSimbolos = tablaSimbolos;
+public Parser(Lexico lexico){
+	this.tablaSimbolos = lexico.getTablaDeSimbolos();
 	this.lexico = lexico;
 	p = new Stack<Integer>();
 }
 
 public int yylex(){
-	int token = lexico.tokenGenerado();
-	yylval = new ParserVal(lexico.ultimoLexemaGenerado);
+	int token = lexico.getToken();
+	yylval = new ParserVal(lexico.getLexema(token));
 	return token;
 }
 
 private void yyerror(String error){
-	Notificador.addError(lexico.getLineaActual(), error);
+	
 }
