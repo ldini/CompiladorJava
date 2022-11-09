@@ -173,7 +173,7 @@ public final static short CONTINUE=267;
 public final static short I8=268;
 public final static short F32=269;
 public final static short ID=270;
-public final static short CADENA=271;
+public final static short CTE=271;
 public final static short CTE_I8=272;
 public final static short CTE_F32=273;
 public final static short MAYOR_IGUAL=274;
@@ -362,7 +362,7 @@ null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
 null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
 null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
 null,null,null,null,null,null,null,"IF","THEN","ELSE","END_IF","OUT","FUN",
-"RETURN","BREAK","DISCARD","FOR","CONTINUE","I8","F32","ID","CADENA","CTE_I8",
+"RETURN","BREAK","DISCARD","FOR","CONTINUE","I8","F32","ID","CTE","CTE_I8",
 "CTE_F32","MAYOR_IGUAL","MENOR_IGUAL","DISTINTO","ASIGNACION","AND","OR",
 };
 final static String yyrule[] = {
@@ -441,11 +441,10 @@ final static String yyrule[] = {
 "lista_variables : lista_variables ',' ID",
 "lista_variables : errores_lista_variables",
 "errores_lista_variables : lista_variables ','",
-"sentencia_salida : OUT '(' CADENA ')' ';'",
+"sentencia_salida : OUT '(' CTE ')' ';'",
 };
 
 //#line 157 "g11_gramatica.y"
-
 public Lexico lexico;
 private Stack <Integer> p;
 private HashMap<String, Integer> tablaSimbolos;
@@ -465,7 +464,7 @@ public int yylex(){
 private void yyerror(String error){
 	
 }
-//#line 397 "Parser.java"
+//#line 396 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -621,11 +620,11 @@ boolean doaction;
 //########## USER-SUPPLIED ACTIONS ##########
 case 6:
 //#line 22 "g11_gramatica.y"
-{System.out.println("SINTACTICO en la Linea N°" + lexico.getLinea() + "- Falta la '{' del programa");}
+{System.out.println("ERROR LINEA: " + lexico.getLinea() + " -> Falta la '{' del programa");}
 break;
 case 7:
 //#line 23 "g11_gramatica.y"
-{System.out.println("SINTACTICO en la Linea N°" + lexico.getLinea() + "- Falta la '}' del programa");}
+{System.out.println("ERROR LINEA: " + lexico.getLinea() + " -> Falta la '}' del programa");}
 break;
 case 8:
 //#line 24 "g11_gramatica.y"
@@ -633,25 +632,25 @@ case 8:
 break;
 case 11:
 //#line 32 "g11_gramatica.y"
-{ System.out.println("declaracion"); }
+{ System.out.print("declaracion"); }
 break;
 case 52:
 //#line 109 "g11_gramatica.y"
-{System.out.println("SINTACTICO en la Linea N°" + lexico.getLinea() + "- Falta el ID que hace referencia al nombre de la funcion");}
+{System.out.println("ERROR LINEA: " + lexico.getLinea() + " -> Falta el ID que hace referencia al nombre de la funcion");}
 break;
 case 53:
 //#line 110 "g11_gramatica.y"
-{System.out.println("SINTACTICO en la Linea N°" + lexico.getLinea() + "- Falta el ID que hace referencia al nombre de la funcion");}
+{System.out.println("ERROR LINEA: " + lexico.getLinea() + " -> Falta el ID que hace referencia al nombre de la funcion");}
 break;
 case 54:
 //#line 111 "g11_gramatica.y"
-{ System.out.println("SINTACTICO en la Linea N°" + lexico.getLinea() + "- Falta el ')' de la funcion");}
+{ System.out.println("ERROR LINEA: " + lexico.getLinea() + " -> Falta el ')' de la funcion");}
 break;
 case 55:
 //#line 112 "g11_gramatica.y"
-{ System.out.println("SINTACTICO en la Linea N°" + lexico.getLinea() + "- Falta el '(' de la funcion");}
+{ System.out.println("ERROR LINEA: " + lexico.getLinea() + " -> Falta el '(' de la funcion");}
 break;
-//#line 578 "Parser.java"
+//#line 577 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####
