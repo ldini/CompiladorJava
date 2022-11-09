@@ -21,13 +21,15 @@ conjunto_sentencias_programa: conjunto_sentencias_declarativas
 
 errores_programa: '{' conjunto_sentencias_declarativas conjunto_sentencias_ejecutables {System.out.println("SINTACTICO en la Linea N°" + lexico.getLinea() + "- Falta la '{' del programa");}
 				  | conjunto_sentencias_declarativas conjunto_sentencias_ejecutables '}' {System.out.println("SINTACTICO en la Linea N°" + lexico.getLinea() + "- Falta la '}' del programa");}
+				  | error { System.out.println("ERROR"); }
 				  ;
 tipo: I8
       | F32
-      | CADENA
       ;
 
-sentencia_declarativa: tipo lista_variables ';'
+
+
+sentencia_declarativa: tipo lista_variables ';' { System.out.println("declaracion"); }
 		             | FUN ID '(' lista_parametros')' ':' tipo '{' conjunto_sentencias_declarativas conjunto_sentencias_ejecutables RETURN '(' expresion ')' '}' ';'
 					 ;
 

@@ -20,8 +20,8 @@ public class Lexico {
 	private int linea;
 	private int id_token;
 	private int token;
-	private static int ID = 256;
-	private static int CTE = 257;
+	private static int ID = 270;
+	private static int CTE = 271;
 
 	
 	// TOTAL DE ESTADOS.
@@ -77,7 +77,7 @@ public class Lexico {
 		
 		index = 0;
 		linea = 1;
-		id_token = 268;
+		id_token = 279;
 		token = -1;
 	}
 	
@@ -95,11 +95,14 @@ public class Lexico {
 				estadoActual = nextEstado(estadoActual,simbolo);
 			}
 			System.out.println(TablaDeSimbolos.get(buffer) + ": " + token + ": " + buffer);// SOLO PARA MOSTRAR
+			return token;
 		}
-		else
-			System.out.println("----FIN DE ARCHIVO----");		
+		else {
+			System.out.println("----FIN DE ARCHIVO----");
+			return 0;
+		}
 		
-		return token;
+		
 	}
 	
 	public String getLexema(int token) {
@@ -262,6 +265,7 @@ public class Lexico {
 		TablaDeSimbolos.put("CTE_I8", 272);
 		TablaDeSimbolos.put("CTE_F32", 273);
 
+		
 		TablaDeSimbolos.put(">=", 274);
 		TablaDeSimbolos.put("<=", 275);
 		TablaDeSimbolos.put("=!", 276);
@@ -273,7 +277,7 @@ public class Lexico {
 	
 	private static int[][] inicializarMatrizDeAccionesSemanticas() {	
 		
-		int R = -1;
+		int R = -2;
 		//CADA NUMERO UBICADO EN LA CELDA DE LA MATRIZ CORRESPONDE A SU ACCION SEMANTICA CORRESPONDIENTE.
 		int [][] matriz = {
 				//LM	lm		DIGITO	BLANCO	/n	TAB	F	_	= 	<	>	(	)	{	}	,	;	-	 + 	/	.	!	'  :   *
@@ -349,7 +353,7 @@ public class Lexico {
 	//AS10: DEVUELVE EL TOKEN IDENTIFICADO Y CHEQUEA LA LONGITUD DEL NOMBRE DEL IDENTIFICADOR O PALABRA RESERVADA EN CASO QUE LO SEA
 	private Integer AS_7(Integer i) {
 		
-		if(TablaDeSimbolos.get(buffer) >= 258 && TablaDeSimbolos.get(buffer) <= 271)
+		if(TablaDeSimbolos.get(buffer) >= 257 && TablaDeSimbolos.get(buffer) <= 269 || TablaDeSimbolos.get(buffer) >= 274 && TablaDeSimbolos.get(buffer) <= 277)
 			token = TablaDeSimbolos.get(buffer);
 		else 
 			token = ID;
