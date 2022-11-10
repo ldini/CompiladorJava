@@ -5,158 +5,146 @@
 	import java.util.Stack;
 %}
 
-%token IF THEN ELSE END_IF OUT FUN RETURN BREAK DISCARD FOR CONTINUE I8 F32 ID CTE CTE_I8 CTE_F32 MAYOR_IGUAL MENOR_IGUAL DISTINTO ASIGNACION AND OR  
+%token IF THEN ELSE END_IF OUT FUN RETURN BREAK DISCARD FOR CONTINUE I8 F32 ID CTE CTE_I8 CTE_F32 MAYOR_IGUAL MENOR_IGUAL DISTINTO ASIGNACION 
 
 %start programa
 
 %%
-programa: ID '{' conjunto_sentencias_programa '}'
-		  | errores_programa
-		  ;
-
-conjunto_sentencias_programa: conjunto_sentencias_declarativas
-							  | conjunto_sentencias_ejecutables
-							  | conjunto_sentencias_declarativas conjunto_sentencias_ejecutables
-							  ;	
-
-errores_programa: '{' conjunto_sentencias_declarativas conjunto_sentencias_ejecutables {System.out.println("ERROR LINEA: " + lexico.getLinea() + " -> Falta la '{' del programa");}
-				  | conjunto_sentencias_declarativas conjunto_sentencias_ejecutables '}' {System.out.println("ERROR LINEA: " + lexico.getLinea() + " -> Falta la '}' del programa");}
-				  | error { System.out.println("ERROR"); }
-				  ;
+programa: ID '{' conjunto_de_sentencias '}' ';'
+		| error
+		;
 
 
-conjunto_sentencias_declarativas: sentencia_declarativa
-				  | conjunto_sentencias_declarativas sentencia_declarativa
-				  ;
+conjunto_de_sentencias: conjunto_de_sentencias_declarativas
+		| conjunto_de_sentencias_ejecutables
+		| conjunto_de_sentencias_declarativas conjunto_de_sentencias_ejecutables
+		;	
 
 
-conjunto_sentencias_ejecutables: ejecutable
-								 | conjunto_sentencias_ejecutables ejecutable
-								 ;
-
-sentencia_declarativa: tipo lista_variables ';' { System.out.print("Declaracion de variable"); }
-		             | FUN ID '(' lista_parametros')' ':' tipo '{' conjunto_sentencias_declarativas conjunto_sentencias_ejecutables RETURN '(' expresion ')' '}' ';' { System.out.print("Declaracion de funcion"); }
-					 ;
+conjunto_de_sentencias_declarativas: sentencia_declarativa
+		| conjunto_de_sentencias_declarativas sentencia_declarativa
+		;
 
 
-tipo: I8
-      | F32
-      ;
+conjunto_de_sentencias_ejecutables: sentencia_ejecutable
+		| conjunto_de_sentencias_ejecutables sentencia_ejecutable
+		;
 
 
-ejecutable: asignacion ';'
-	        | sentencia_if
-			| sentencia_DISCARD
-			| sentencia_for
-			| sentencia_salida
-	        ;
+bloque_de_sentencias_ejecutables: '{' conjunto_de_sentencias '}'
+		;
 
 
-sentencia_if: IF '(' condicion ')' THEN bloque_if END_IF
-	          ;
+sentencia_declarativa: declaracion_de_variable
+		| declaracion_de_funcion
+		;
 
-bloque_if: sentencia_ejecutable_if
-		   | sentencia_ejecutable_if ELSE sentencia_ejecutable_if
-		   ;
 
-sentencia_ejecutable_if: '{' conjunto_sentencias_ejecutables '}'
-						;
+declaracion_de_variable: tipo lista_de_variables';' { System.out.print("Declaracion de variable"); }
+		;
+
+
+lista_de_variables: ID
+		| lista_de_variables ',' ID
+		; 
+
+
+declaracion_de_funcion: FUN ID '(' lista_de_parametros')' ':' tipo '{' conjunto_de_sentencias RETURN '(' expresion ')' '}' ';' { System.out.print("Declaracion de funcion"); }
+		| FUN ID '('')' ':' tipo '{' conjunto_de_sentencias RETURN '(' expresion ')' '}' ';' { System.out.print("Declaracion de funcion"); }
+		;
+
+
+lista_de_parametros: parametro ',' parametro
+	 	| parametro
+	    ;
+
+
+parametro: tipo ID
+		| CTE
+		| CTE_I8
+		| CTE_F32
+	   	; 
+
+
+tipo: 	I8
+      	| F32
+      	;
+
+
+sentencia_ejecutable: asignacion ';'
+		| sentencia_if
+		| sentencia_for
+		| sentencia_de_salida
+		;
+
+
+asignacion: ID ASIGNACION expresion 
+		| ID ASIGNACION invocacion_funcion
+		| ID ASIGNACION sentencia_for
+		;	
+
+
+invocacion_funcion: ID '(' ID ')'
+		| DISCARD ID '('lista_de_parametros')' ';'
+		| ID '('lista_de_parametros')'';'  {System.out.println("ERROR LINEA: " + lexico.getLinea() + " -> Invocacion debe ser precedida por discard");}
+		;
+
+
+sentencia_if: IF '(' condicion ')' THEN bloque_de_sentencias_ejecutables ELSE bloque_de_sentencias_ejecutables END_IF
+		| IF '(' condicion ')' THEN bloque_de_sentencias_ejecutables END_IF
+	    ;
+
+
+condicion: expresion comparacion expresion
+		;
+
+
+comparacion: MENOR_IGUAL
+		| MAYOR_IGUAL
+		| DISTINTO
+		| '<'
+		| '>'
+		| '='
+		;
+
+
+sentencia_for: FOR '('ID asignacion I8 ';' condicion_for ';' '+'constante ')' bloque_de_sentencias_ejecutables BREAK';' ';'
+		| FOR '('ID asignacion I8 ';' condicion_for ';' '+'constante ')' bloque_de_sentencias_ejecutables ';'
+ 		| etiqueta FOR '('ID asignacion I8 ';' condicion_for ';' '+'constante ')' bloque_de_sentencias_ejecutables BREAK':'etiqueta';'  
+        ;
 
 etiqueta: ID ':'
 	;
 
-sentencia_DISCARD: DISCARD ID '(' parametro ')' ';'
-			;
+condicion_for: I8 comparacion I8
+		| I8 comparacion CTE_I8
+		;
 
-sentencia_for: etiqueta FOR '(' asignacion ';' condicion_for ';' constante ')' conjunto_sentencias_ejecutables BREAK';' ';'
-			   | etiqueta FOR '(' asignacion ';' condicion_for ';' constante ')' conjunto_sentencias_ejecutables ';'
-			   | FOR '(' asignacion ';' condicion_for ';' constante ')' conjunto_sentencias_ejecutables BREAK';' ';'
-			   | FOR '(' asignacion ';' condicion_for ';' constante ')' conjunto_sentencias_ejecutables ';'
-	           ;
 
-condicion: condicion_AUX
-		   | condicion operador condicion_AUX
-		   | errores_condicion
-		   ;
-
-operador: AND
-		  | OR
-		  ;
-
-condicion_for: ID comparador expresion
-			  ;
-
-errores_condicion: comparador
-		           | comparador expresion
-		           ;
-
-condicion_AUX: expresion comparador expresion
-	       ;  
-
-comparador: '<'
-			| '>'
-			| MENOR_IGUAL
-			| MAYOR_IGUAL
-			| DISTINTO
-			| '='
-			;
-
-asignacion: ID ASIGNACION expresion ';'
-	        | ID ASIGNACION invocacion_funcion
-			| ID ASIGNACION sentencia_for
-	        ;	
-			
-invocacion_funcion: ID '(' ID ')'
-		    | errores_invocacion_funcion
-	        ;
-
-errores_invocacion_funcion: '(' ID ')' {System.out.println("ERROR LINEA: " + lexico.getLinea() + " -> Falta el ID que hace referencia al nombre de la funcion");}
-			    | ID '(' ')' {System.out.println("ERROR LINEA: " + lexico.getLinea() + " -> Falta el ID que hace referencia al nombre de la funcion");}
-			    | '(' ID { System.out.println("ERROR LINEA: " + lexico.getLinea() + " -> Falta el ')' de la funcion");}
-			    | ID ')' { System.out.println("ERROR LINEA: " + lexico.getLinea() + " -> Falta el '(' de la funcion");}
-			    ;
+sentencia_de_salida: OUT '(' CTE ')' ';'
+		;
 
 expresion: expresion '+' termino
-	   | expresion '-' 	termino
-	   | termino
-	   ;
+		| expresion '-' termino
+		| termino
+		;
 
 termino: termino '*' factor
-	 | termino '/' factor
-	 | factor
-	 ;
+		| termino '/' factor
+		| factor
+		;
 
 factor: ID
-	| constante
-	| '-'constante {$$ = -1*$1;}
-	;
+		| constante
+		| '-'ID {$$ = -1*$1;}
+		| '-'constante {$$ = -1*$1;}
+		;
 
 constante: CTE_I8
-	   | CTE_F32
-	   ;
+		| CTE_F32
+		;
 
-parametro: tipo ID
-	   | errores_parametro
-	   ; 
 
-lista_parametros: lista_parametros parametro
-	   | parametro
-	   ;
-
-errores_parametro: ID  { System.out.println("ERROR LINEA: " + lexico.getLinea() + " -> Falta nombre de constante;}
-		   ;
-
-lista_variables: ID
-		 | lista_variables ',' ID
-		 | errores_lista_variables
-		 ; 
-
-errores_lista_variables: lista_variables ',' 
-		 ;
-
-sentencia_salida: OUT '(' CTE ')' ';'
-			;
-	
 
 %%
 public Lexico lexico;
