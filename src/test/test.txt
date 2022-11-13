@@ -1,5 +1,0 @@
-programa{
-	f32 a;
-	<< hola como estas
-	i8 a =: 32;
-}

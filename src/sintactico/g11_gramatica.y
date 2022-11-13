@@ -11,8 +11,7 @@
 
 %%
 programa: ID '{' conjunto_de_sentencias '}' ';'
-		| error
-		;
+		; 
 
 
 conjunto_de_sentencias: conjunto_de_sentencias_declarativas
@@ -32,7 +31,7 @@ conjunto_de_sentencias_ejecutables: sentencia_ejecutable
 
 
 bloque_de_sentencias_ejecutables: '{' conjunto_de_sentencias '}'
-		;
+		; 
 
 
 sentencia_declarativa: declaracion_de_variable
@@ -71,16 +70,15 @@ tipo: 	I8
       	;
 
 
-sentencia_ejecutable: asignacion ';'
-		| sentencia_if
-		| sentencia_for
-		| sentencia_de_salida
+sentencia_ejecutable: asignacion
+		| sentencia_if {System.out.print("  <- SENTENCIA IF");}
+		| sentencia_for {System.out.print("  <- SENTENCIA FOR");}
+		| sentencia_de_salida {System.out.print("  <- SENTENCIA SALIDA");}
 		;
 
 
-asignacion: ID ASIGNACION expresion 
-		| ID ASIGNACION invocacion_funcion
-		| ID ASIGNACION sentencia_for
+asignacion: ID ASIGNACION expresion ';'
+		| ID ASIGNACION invocacion_funcion ';'
 		;	
 
 
@@ -108,13 +106,16 @@ comparacion: MENOR_IGUAL
 		;
 
 
-sentencia_for: FOR '('ID asignacion I8 ';' condicion_for ';' '+'constante ')' bloque_de_sentencias_ejecutables BREAK';' ';'
-		| FOR '('ID asignacion I8 ';' condicion_for ';' '+'constante ')' bloque_de_sentencias_ejecutables ';'
- 		| etiqueta FOR '('ID asignacion I8 ';' condicion_for ';' '+'constante ')' bloque_de_sentencias_ejecutables BREAK':'etiqueta';'  
-        ;
+sentencia_for: FOR '('ID ASIGNACION I8 ';' condicion_for ';' '+'constante ')' bloque_de_sentencias_ejecutables BREAK';' ';'
+		| FOR '('ID ASIGNACION I8 ';' condicion_for ';' '+'constante ')' bloque_de_sentencias_ejecutables ';'
+ 		| etiqueta FOR '('ID ASIGNACION I8 ';' condicion_for ';' '+'constante ')' bloque_de_sentencias_ejecutables BREAK':'etiqueta';'  
+        | FOR ID ASIGNACION I8 ';' condicion_for ';' '+'constante ')' bloque_de_sentencias_ejecutables BREAK';' ';' {System.out.println("ERROR LINEA: " + lexico.getLinea() + " ->FALTA PARENTESIS");}
+		| error ; 
+		;
 
 etiqueta: ID ':'
-	;
+		;
+
 
 condicion_for: I8 comparacion I8
 		| I8 comparacion CTE_I8
@@ -136,12 +137,13 @@ termino: termino '*' factor
 
 factor: ID
 		| constante
-		| '-'ID {$$ = -1*$1;}
-		| '-'constante {$$ = -1*$1;}
+		| '-' ID
+		| '-' constante 
 		;
 
 constante: CTE_I8
 		| CTE_F32
+		| CTE
 		;
 
 
@@ -162,6 +164,20 @@ public int yylex(){
 	yylval = new ParserVal(lexico.getLexema(token));
 	return token;
 }
+
+// private ParserVal negativo(ParserVal numero){
+// 	row = tablaSimbolos.get(numero.ival)
+// 	if (row.tipo === i8) 
+// 		if(row.val < rangoint)
+// 		  if(tablaSimbolos.find(-row.val))
+// 			return ParserVal(tablaSimbolos.find(-row.val))
+// 			else 
+			
+// }
+
+// private int negativo(int numero){
+	
+// }
 
 private void yyerror(String error){
 	

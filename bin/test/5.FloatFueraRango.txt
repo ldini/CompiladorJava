@@ -1,5 +1,0 @@
-programa {
-	FLOAT fueraRangoPositivo, fueraRangoNegativo;
-	fueraRangoPositivo = 3.40282347F+40;
-	fueraRangoNegativo = -3.40282347F+40
-}

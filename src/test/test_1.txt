@@ -1,0 +1,4 @@
+programa {
+	i8 entero_1 =: -129;
+	i8 entero_2 =: 128;
+};

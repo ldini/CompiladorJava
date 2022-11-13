@@ -1,0 +1,6 @@
+programa {
+	for(i = 0;i>4;+1){
+		i3 = 3;
+	};
+	i8 entero_2 =: 127;
+};

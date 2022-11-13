@@ -1,7 +1,0 @@
-programa {
-	INT fueraRangoPositivo, fueraRangoNegativo;
-	fueraRangoPositivo = 130;
-	fueraRangoNegativo = -130;
-}
-
-<<Ejemplo 3: Entero positivo y negativo fueras de rango.

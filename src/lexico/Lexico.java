@@ -22,6 +22,8 @@ public class Lexico {
 	private int token;
 	private static int ID = 270;
 	private static int CTE = 271;
+	private static int CTE_I8 = 272;
+	private static int CTE_F32 = 273;
 
 	
 	// TOTAL DE ESTADOS.
@@ -57,7 +59,7 @@ public class Lexico {
 	public static int OTRO = 25;				//CUALQUIER OTRO CARACTER NO CONTEMPLADO EN ESTA ENTREGA
 	public static int EOF = 26;					//FIN DEL ARCHIVO
 	
-	public static int ENTRADAS = 26;			//TOTAL DE ENTRADAS POSIBLES.
+	public static int ENTRADAS = 27;			//TOTAL DE ENTRADAS POSIBLES.
 	public static int ESTADOS = 13;				//TOTAL DE ESTADOS DISPONIBLES.
 	
 	
@@ -94,8 +96,14 @@ public class Lexico {
 				ejecutarAccionesSemanticas(estadoActual,simbolo);
 				estadoActual = nextEstado(estadoActual,simbolo);
 			}
-			System.out.println(TablaDeSimbolos.get(buffer) + ": " + token + ": " + buffer);// SOLO PARA MOSTRAR
-			return token;
+			if(token == ID)
+				System.out.println(TablaDeSimbolos.get(buffer) + ": " + "IDENTIFICADOR    " + ": " + buffer);// SOLO PARA MOSTRAR
+			else {
+				if(TablaDeSimbolos.get(buffer) >= 257 && TablaDeSimbolos.get(buffer) <= 269)
+					System.out.println(TablaDeSimbolos.get(buffer) + ": " + "PALABRA RESERVADA" + ": " + buffer);// SOLO PARA MOSTRAR
+				else
+					System.out.println(TablaDeSimbolos.get(buffer) + ": " + "OTRO             " + ": " + buffer);}// SOLO PARA MOSTRAR
+				return token;
 		}
 		else {
 			System.out.println("----FIN DE ARCHIVO----");
@@ -161,20 +169,20 @@ public class Lexico {
 		
 		//DENTRO DE LA MATRIZ HAY ESTADOS DE ERROR QUE SE MANEJAN CON ACCIONES SEMANTICAS Y VAN A ESTADO FINAL.
 				
-		//LM-{F}	lm		Digito	Blanco	/n	Tab	F   _   =   <	>	(	)	{	}	,	;	-   + 	/	.	!	 ' 	:  *
-			{1,		1,		6,		0,		0,	0,	1,	0,	4,	2,	3,	F,	F,	F,	F,	F,	F,	F,	F,	F,	7,	F,	10, F ,F},	// ESTADO 0  INICIAL OK FALTA :
-			{1,		1,		1,		F,		F,	F,	1,	1,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,  F ,F},		// ESTADO 1  OK  
-			{F,		F,		F,		F,		F,	F,	F,	F,	F,	5,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,  F ,F},		// ESTADO 2  OK
-			{F,		F,		F,		F,		F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,  F ,F},		// ESTADO 3  OK
-			{F,		F,		F,		F,		F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,  F ,F},		// ESTADO 4  OK
-			{5,		5,		5,		5,		0,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,  5 ,5},		// ESTADO 5  OK
-			{F,		F,		6,		F,		F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	7,	F,	F,  F ,F},		// ESTADO 6  OK
-			{F,		F,		7,		F,		F,	F,	8,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,  F ,F},		// ESTADO 7  OK
-			{F,		F,		8,		F,		F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	9,	9,	F,	F,	F,	F,  F ,F},		// ESTADO 8  OK
-			{F,		F,		9,		F,		F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,  F ,F},		// ESTADO 9  OK
-			{10,	10,		10,		10,		10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	11,	10,	10,	F,  10,10},		// ESTADO 10 OK
-			{10,	10,		10,		10,		12,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	11,	10,	10,	F,  10,10},		// ESTADO 11 OK
-			{10,	10,		10,		10,		10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	F,  10,10}		// ESTADO 12 OK
+		//LM-{F}	lm		Digito	Blanco	/n	Tab	F   _   =   <	>	(	)	{	}	,	;	-   + 	/	.	!	 ' 	:  * OTRO
+			{1,		1,		6,		0,		0,	0,	1,	0,	4,	2,	3,	F,	F,	F,	F,	F,	F,	F,	F,	F,	7,	F,	10, F ,F, 0},	// ESTADO 0  INICIAL OK FALTA :
+			{1,		1,		1,		F,		F,	F,	1,	1,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,  F ,F, 1},		// ESTADO 1  OK  
+			{F,		F,		F,		F,		F,	F,	F,	F,	F,	5,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,  F ,F, F},		// ESTADO 2  OK
+			{F,		F,		F,		F,		F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,  F ,F, F},		// ESTADO 3  OK
+			{F,		F,		F,		F,		F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,  F ,F, F},		// ESTADO 4  OK
+			{5,		5,		5,		5,		0,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,	5,  5 ,5, 5},		// ESTADO 5  OK
+			{F,		F,		6,		F,		F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	7,	F,	F,  F ,F, F},		// ESTADO 6  OK
+			{F,		F,		7,		F,		F,	F,	8,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,  F ,F, F},		// ESTADO 7  OK
+			{F,		F,		8,		F,		F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	9,	9,	F,	F,	F,	F,  F ,F, F},		// ESTADO 8  OK
+			{F,		F,		9,		F,		F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,	F,  F ,F, F},		// ESTADO 9  OK
+			{10,	10,		10,		10,		0,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	11,	10,	10,	F,  10,10,10},		// ESTADO 10 OK
+			{10,	10,		10,		10,		12,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	11,	10,	10,	F,  10,10,10},		// ESTADO 11 OK
+			{10,	10,		10,		10,		10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	10,	F,  10,10,10}		// ESTADO 12 OK
 		};
 		
 		return matrizTransicion;		
@@ -260,10 +268,10 @@ public class Lexico {
 		TablaDeSimbolos.put("i8", 268);  // TEMA PARTICULAR 1
 		TablaDeSimbolos.put("f32", 269); // TEMA PARTICULAR 7
 
-		TablaDeSimbolos.put("ID", 270);
-		TablaDeSimbolos.put("CTE", 271);
-		TablaDeSimbolos.put("CTE_I8", 272);
-		TablaDeSimbolos.put("CTE_F32", 273);
+		TablaDeSimbolos.put("ID", ID);
+		TablaDeSimbolos.put("CTE", CTE);
+		TablaDeSimbolos.put("CTE_I8", CTE_I8);
+		TablaDeSimbolos.put("CTE_F32", CTE_F32);
 
 		
 		TablaDeSimbolos.put(">=", 274);
@@ -280,20 +288,20 @@ public class Lexico {
 		int R = -2;
 		//CADA NUMERO UBICADO EN LA CELDA DE LA MATRIZ CORRESPONDE A SU ACCION SEMANTICA CORRESPONDIENTE.
 		int [][] matriz = {
-				//LM	lm		DIGITO	BLANCO	/n	TAB	F	_	= 	<	>	(	)	{	}	,	;	-	 + 	/	.	!	'  :   *
-				{10,	10,		10,		2,		13,	2,	10,	2,	10,	10,	10,	9,	9,	9,	9,	9,	9,	9,	9,	9,	10,	9,	10, 9 ,9},	//Estado 0  OK
-				{11,	11,		11,		12,		12,	12,	11,	11,	12,	12, 12,	12,	12,	12,	12,	12,	12,	12,	12,	12,	12,	12,	12,12,12},	//Estado 1  OK
-				{15,	15,		15,		15,		15,	15,	15,	15,	14,	14,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,15,15},	//Estado 2  OK
-				{15,	15,		15,		15,		15,	15,	15,	15,	14,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,15,15},	//Estado 3  OK
-				{15,	15,		15,		15,		15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	14,	15,14,15},  //Estado 4  OK	
-				{2,		2,		2,		2,		13,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2, 2 , 2},	//Estado 5  OK
-				{16,	16,		11,		16,		16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	11,	16,	16,16,16},  //Estado 6  OK	
-				{16,	16,		11,		16,		16,	16,	11,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,16,16},  //Estado 7  OK
-				{16,	16,		11,		16,		16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	11,	11,	16,	16,	16, 16,16,16},  //Estado 8  OK
-				{16,	16,		11,		16,		16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16, 16,16,16},  //Estado 9  OK 	
-				{11,	11,		11,		11,		13,	11,	11,	11,	11,	11,	11,	11,	11,	11,	11,	11,	11,	11,	11,	2,	11,	11,	18,11,11},	//Estado 10 OK
-				{17,	17,		17,		17,		13,	17,	17,	17,	17,	17,	17,	17,	17,	17,	17,	17,	17,	17,	17,	11,	17,	17,	19,17,17},	//Estado 11 OK
-				{20,	20,		20,		20,		13,	20,	20,	20,	20,	20,	20,	20,	20,	20,	20,	20,	20,	20,	20,	20,	20,	20,	18, 20 ,20}	//Estado 12 OK
+				//LM	lm		DIGITO	BLANCO	/n	TAB	F	_	= 	<	>	(	)	{	}	,	;	-	 + 	/	.	!	'  :   * OTRO
+				{10,	10,		10,		2,		13,	2,	10,	24,	10,	10,	10,	9,	9,	9,	9,	9,	9,	9,	9,	9,	10,	9,	10, 9 ,9,10},	//Estado 0  OK
+				{11,	11,		11,		12,		12,	12,	11,	11,	12,	12, 12,	12,	12,	12,	12,	12,	12,	12,	12,	12,	12,	12,	12,12,12,11},	//Estado 1  OK
+				{15,	15,		15,		15,		15,	15,	15,	15,	14,	14,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,15,15,15},	//Estado 2  OK
+				{15,	15,		15,		15,		15,	15,	15,	15,	14,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,15,15,15},	//Estado 3  OK
+				{15,	15,		15,		15,		15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	14,	15,14,15,15},  //Estado 4  OK	
+				{2,		2,		2,		2,		13,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2, 2 , 2,2},	//Estado 5  OK
+				{25,	25,		11,		25,		25,	25,	25,	25,	25,	25,	25,	25,	25,	25,	25,	25,	25,	25,	25,	25,	11,	25,	25,25,25,25},  //Estado 6  OK	
+				{28,	28,		11,		28,		28,	28,	11,	28,	28,	28,	28,	28,	28,	28,	28,	28,	28,	28,	28,	28,	28,	28,	28,28,28,28},  //Estado 7  OK
+				{28,	28,		11,		28,		28,	28,	28,	28,	28,	28,	28,	28,	28,	28,	28,	28,	28,	11,	11,	28,	28,	28, 28,28,28,28},  //Estado 8  OK
+				{28,	28,		11,		28,		28,	28,	28,	28,	28,	28,	28,	28,	28,	28,	28,	28,	28,	28,	28,	28,	28,	28, 28,28,28,28},  //Estado 9  OK 	
+				{11,	11,		11,		11,		30,	11,	11,	11,	11,	11,	11,	11,	11,	11,	11,	11,	11,	11,	11,	2,	11,	11,	18,11,11,11},	//Estado 10 OK
+				{17,	17,		17,		17,		13,	17,	17,	17,	17,	17,	17,	17,	17,	17,	17,	17,	17,	17,	17,	11,	17,	17,	19,17,17,17},	//Estado 11 OK
+				{20,	20,		20,		20,		13,	20,	20,	20,	20,	20,	20,	20,	20,	20,	20,	20,	20,	20,	20,	20,	20,	20,	18, 20 ,20,20}	//Estado 12 OK
 		
 		};
 		
@@ -373,6 +381,16 @@ public class Lexico {
 		token = CTE;
 		return 0;
 	}
+	
+ 	private Integer AS_26(Integer i) {
+		token = CTE_I8;
+		return 0;
+	}
+ 	
+ 	private Integer AS_27(Integer i) {
+		token = CTE_F32;
+		return 0;
+	}
 
 	// ACCIONES SEMANTICAS COMPUESTAS.
 	
@@ -438,6 +456,20 @@ public class Lexico {
 		AS_8(1);
 		return 0;
 	}
+	
+ 	private Integer AS_25(Integer i) {
+		AS_6(1);
+		AS_26(1);
+		AS_22(1);
+		return 0;
+	}
+ 	
+ 	private Integer AS_28(Integer i) {
+		AS_6(1);
+		AS_27(1);
+		return 0;
+	}
+ 	
 
 	//AS17: SE UTILIZA EN CASO  QUE DEL ESTADO 11 AL 10 APARZCA UN '/' PARA CONCADENARLA Y TOMARLA COMO PARTE DEL LA CADENA DE CARACTERES
  	private Integer AS_17(Integer i) {
@@ -446,9 +478,11 @@ public class Lexico {
 		AS_2(1);
 		return 0;
 	}
+ 	
+
 	
 	
-	//AS18: EN CASO DE QUE LA CADENA DE CARACTERES SEA VACIA EN EL ESTADO 10 O 12, LE ASIGNA A '' UN TOKEN Y DEVUELVE EL TOKEN DE CONSTANTE 
+	//AS18: EN CASO DE QUE LA CADENA DE CARACTERES SEA VACIA EN EL ESTADO 10 O 12, LE ASIGNA A ''' UN TOKEN Y DEVUELVE EL TOKEN DE CONSTANTE 
 	private Integer AS_18(Integer i) {
 		AS_1(1);
 		AS_6(1);
@@ -467,6 +501,13 @@ public class Lexico {
 		AS_6(1);
 		AS_8(1);
 		AS_2(1);
+		return 0;
+	}
+	
+	private Integer AS_30(Integer i) {
+		AS_29(1);
+		AS_6(1);
+		AS_8(1);
 		return 0;
 	}
 	
@@ -490,12 +531,24 @@ public class Lexico {
 	//AS22: CASO PARTICULAR 1, LOS ENTEROS DEBEN ESTAR ENTRE -2^7 Y 2^7-1 
 	private Integer AS_22(Integer i) {
 		int entero = Integer.parseInt(buffer);
-		if(entero < -128 && entero > 128)
+		if(entero > 127)
 			System.out.println("LINEA: "+ linea + " ERROR: CONSTANTE ENTERA FUERA DE RANGO PERMITIDO.");
 		return 0;
 	}
 	
+	//AS21: SALTA UN WARNING EN CASO QUE UN IDENTIFICADO COMIENSE CON UN '_'
+	private  Integer AS_24(Integer i) {
+		index++;
+		System.out.println("LINEA: "+ linea + " WARNING: EL IDENTIFICADOR COMIENZA CON _ SE APLICO UNA ACCION REPARADORA");
+		return 0;
+	}
 	
+	//AS29: ACCION REPARADORA PARA LA CADENA MULTILINEA SI APARECE UN SALTO DE LINEA
+	private  Integer AS_29(Integer i) {
+		buffer += "'";
+		System.out.println("LINEA: "+linea+" WARNING: ACCION REPARADORA PARA UNA CADENA MULTILINEA");
+		return 0;
+	}
 
 	private void cargarAccionesSemanticas() {
 
@@ -572,7 +625,28 @@ public class Lexico {
 			
 			aux = this::AS_23;
 			AccionesSemanticas.add(aux);
+			
+			aux = this::AS_24;
+			AccionesSemanticas.add(aux);
 
+			aux = this::AS_25;
+			AccionesSemanticas.add(aux);
+			
+			aux = this::AS_26;
+			AccionesSemanticas.add(aux);
+			
+			aux = this::AS_27;
+			AccionesSemanticas.add(aux);
+			
+			aux = this::AS_28;
+			AccionesSemanticas.add(aux);
+			
+			aux = this::AS_29;
+			AccionesSemanticas.add(aux);
+			
+			aux = this::AS_30;
+			AccionesSemanticas.add(aux);
 	}
+	
 	
 }

@@ -10,7 +10,10 @@ public class Compilador {
 	private Lexico lexico;
 	private Parser parser;
 	
+	private Lexico lexicoPrueba;
 	public Compilador() {
+		
+
 
 	}
 
@@ -18,6 +21,14 @@ public class Compilador {
 		lexico = new Lexico(path);
 		parser = new Parser(lexico);
 		parser.run();
+		
+		System.out.println("/////////////////////////////////////////////////////");
+		lexicoPrueba = new Lexico(path);
+		for (int i = 0; i < 14; i++) {
+			lexicoPrueba.getToken();
+			
+		}
+		System.out.println("/////////////////////////////////////////////////////");
 	}
 
 }

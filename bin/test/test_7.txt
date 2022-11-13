@@ -1,0 +1,8 @@
+<<< COMENTARIO MAL ESCRITO
+
+programa {
+	f32 flo#$tante_1 =: .1;
+	F32 flo#$tante_1 =: .1;
+};
+
+<< COMENTARIO BIEN ESCRITO

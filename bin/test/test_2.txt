@@ -1,0 +1,6 @@
+programa {
+	f32 flotante_1 =: .1;
+	f32 flotante_2 =: .1F;
+	f32 flotante_3 =: .1F2;
+	f32 flotante_4 =: 1.1F12;
+};

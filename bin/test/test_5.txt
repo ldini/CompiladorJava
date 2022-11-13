@@ -1,0 +1,3 @@
+programa {
+	f32 _flo#$tante_1 =: .1;
+};

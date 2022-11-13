@@ -1,7 +1,0 @@
-programa{
-	INT variabl3,x;
-	x =: 3 + 4;
-	variabl3 =: x;
-}
-
-<<Ejemplo 1: Ejemplo de una variable cuyo nombre comienza con "_" y contiene letras y digitos. Tambien hay 2 ejemplo de asignacion

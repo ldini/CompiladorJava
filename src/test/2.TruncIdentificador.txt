@@ -1,6 +1,0 @@
-programa {
-	INT variableconmas25caracteres, x;
-	x =: 3 + 4;
-}
-
-<<Ejemplo 2: Ejemplo de identificador con mas de 25 caracteres

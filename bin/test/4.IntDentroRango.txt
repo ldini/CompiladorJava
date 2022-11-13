@@ -1,5 +1,0 @@
-programa {
-	INT _dentroRangoPositivo, _dentroRangoNegativo;
-	_dentroRangoPositivo = 126;
-	_dentroRangoNegativo = -128;
-}

@@ -1,0 +1,7 @@
+programa{
+	identeficador =: 'Comentario /
+						Multilinea';
+						
+	multilinea =: 'Comentario
+	Comentario';
+}
